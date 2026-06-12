@@ -35,6 +35,11 @@ namespace Flow.Launcher.Core.Plugin
             _startInfo.EnvironmentVariables["FLOW_APPLICATION_DIRECTORY"] = Constant.ApplicationDirectory;
         }
 
+        internal static string PythonStringLiteral(string value)
+        {
+            return JsonSerializer.Serialize(value);
+        }
+
         protected override Task<Stream> RequestAsync(JsonRPCRequestModel request, CancellationToken token = default)
         {
             _startInfo.ArgumentList[2] = JsonSerializer.Serialize(request, RequestSerializeOption);
@@ -70,14 +75,14 @@ namespace Flow.Launcher.Core.Plugin
                 _startInfo.ArgumentList.Add(
                     $"""
                      import sys
-                     sys.path.append(r'{rootDirectory}')
-                     sys.path.append(r'{libDirectory}')
-                     sys.path.append(r'{libPyWin32LibDirectory}')
-                     sys.path.append(r'{libPyWin32Directory}')
-                     sys.path.append(r'{pluginDirectory}')
+                     sys.path.append({PythonStringLiteral(rootDirectory)})
+                     sys.path.append({PythonStringLiteral(libDirectory)})
+                     sys.path.append({PythonStringLiteral(libPyWin32LibDirectory)})
+                     sys.path.append({PythonStringLiteral(libPyWin32Directory)})
+                     sys.path.append({PythonStringLiteral(pluginDirectory)})
 
                      import runpy
-                     runpy.run_path(r'{context.CurrentPluginMetadata.ExecuteFilePath}', None, '__main__')
+                     runpy.run_path({PythonStringLiteral(context.CurrentPluginMetadata.ExecuteFilePath)}, None, '__main__')
                      """
                 );
                 // Plugins always expect the JSON data to be in the third argument

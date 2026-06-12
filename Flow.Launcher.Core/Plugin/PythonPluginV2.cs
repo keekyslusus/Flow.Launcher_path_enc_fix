@@ -49,14 +49,14 @@ namespace Flow.Launcher.Core.Plugin
                 StartInfo.ArgumentList.Add(
                     $"""
                      import sys
-                     sys.path.append(r'{rootDirectory}')
-                     sys.path.append(r'{libDirectory}')
-                     sys.path.append(r'{libPyWin32LibDirectory}')
-                     sys.path.append(r'{libPyWin32Directory}')
-                     sys.path.append(r'{pluginDirectory}')
+                     sys.path.append({PythonPlugin.PythonStringLiteral(rootDirectory)})
+                     sys.path.append({PythonPlugin.PythonStringLiteral(libDirectory)})
+                     sys.path.append({PythonPlugin.PythonStringLiteral(libPyWin32LibDirectory)})
+                     sys.path.append({PythonPlugin.PythonStringLiteral(libPyWin32Directory)})
+                     sys.path.append({PythonPlugin.PythonStringLiteral(pluginDirectory)})
                      
                      import runpy
-                     runpy.run_path(r'{filePath}', None, '__main__')
+                     runpy.run_path({PythonPlugin.PythonStringLiteral(filePath)}, None, '__main__')
                      """
                 );
             }
